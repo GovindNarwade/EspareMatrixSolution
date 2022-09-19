@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../config/multer");
 const employee = require("../controller/empController");
 
+//----------------------- Dash-Board Routes ------------------------------------
 
 /**
  * @swagger
@@ -581,7 +583,8 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
 
 
 
-//------Delete Employee-------
+//-------- Delete Employee--------------------
+
 /**
  * @swagger
  * /employee/deleteEmployee/{employeeId}:
@@ -603,5 +606,19 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
 router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 
+
+
+
+//--------------------------Leave Section Routes------------------------------
+
+router.post("/applyForLeave/:employeeId",employee.applyForLeave);
+
+
+router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
+
+router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication);
+
+router.put("/rejectLeaveApplication/:employeeId",employee.rejectLeaveApplication);
+// router.post("/upload",upload.single("img"),employee.uploadImage);
 
 module.exports = router;

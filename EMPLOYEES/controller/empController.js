@@ -1,5 +1,9 @@
-const employeeModel = require("../models/empmodel");
+const employeeModel = require("../models/empModel");
+const leaveModel = require("../models/leaveModel");
 const bcrypt = require("bcrypt");
+
+
+//______________________________ Employee Dashboard ___________________________
 
 
 //------------------ Register Empolyee -----------------------------
@@ -183,4 +187,84 @@ exports.delete = (req,res) =>{
     });
 }
 
+
+
+
+
+//__________________________________ Leave Section ___________________________________
+
+
+exports.applyForLeave = (req,res) =>{
+     
+    let Form = new leaveModel({
+         EmployeeId: req.params.employeeId,
+         LeaveType: req.body.LeaveType,
+         LeaveDescription : req.body.LeaveDescription,
+         LeaveFrom : req.body.LeaveFrom,
+         LeaveTo: req.body.LeaveTo,
+         Status: "A Waiting Approvel"
+    });
+
+    Form.save((err)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.send("Leave Form Submited Successfully!");
+        }
+    });
+}
+
+
+exports.checkLeaveHistory = (req,res) =>{
+    const ID = req.params.employeeId;
+
+    leaveModel.findOne({EmployeeId: ID},(err,result)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.send(result);
+        }
+    });
+}
+
+
+exports.acceptLeaveApplication = (req,res) =>{
+    const ID = req.params.employeeId;
+    console.log(ID);
+
+    const status = {
+        Status: "Approved"
+    }
+
+    leaveModel.findOneAndUpdate({EmployeeId : ID},status,(err,result)=>{
+            if(err){
+                res.send(err);
+            }else{
+                res.send("LeaveForm Approved Sucessfully!");
+            }
+    });
+}
+
+
+exports.rejectLeaveApplication = (req,res) =>{
+    const ID = req.params.employeeId;
+
+    const status = {
+        Status : "Not Approved"
+    }
+
+    leaveModel.findOneAndUpdate({EmployeeId: ID},status,(err,result)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.send("LeaveForm Not-Approved");
+        }
+    });
+}
+
+// exports.uploadImage = async (req,res) => {
+//     const file = req.file;
+//     const filename = file.originalname;
+
+// }
 
