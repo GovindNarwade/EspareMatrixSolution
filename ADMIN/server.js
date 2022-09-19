@@ -34,7 +34,7 @@ const options = {
   };
   
   const specs = swaggerJsDoc(options);
-  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+  app.use("/api-docs-Admin", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/api/v1/admin",admin)
 app.use("/api/v1/group",group)
 app.use("/api/v1",origanization)

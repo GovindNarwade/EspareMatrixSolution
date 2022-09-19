@@ -7,35 +7,37 @@ const router = express.Router()
  * components:
  *   schemas:
  *     organization:
- *       type: object 
- *        required :
- *        - organizationId
- *        - Name
- *        - Email
- *        - Phone
- *        - About 
+ *       type: object
+ *       required:
+ *         - organizationId
+ *         - Name
+ *         - Email
+ *         - Phone
+ *         - About
  *       properties:
  *         organizationId:
- *           type: integer
- *           description: organizationId
+ *           type: Number
+ *           description: uniqueid
  *         Name:
- *           type: string
- *           description: Name
+ *           type: String
+ *           description: Name 
  *         Email:
- *           type: string
- *           description: Email@gmail.com
- *         Phone:
- *           type: integer
- *           description: 78945621
- *        About:
- *           type: string
- *           description: About
+ *        type:String
+ *           description:EmailID 
+ *        Phone:
+ *           type:Number
+ *           description: Phone 
+ *       About:
+ *           type:String
+ *           description: About 
+ * 
+ * 
  *       example:
- *        organizationId: 7894
- *          Name:abc 
- *          Email:abc@gmail.com
- *          Phone:7894651015
- *          About:asdfcxz
+ *        organizationId: 
+ *          Name  : 
+ *          Email :
+ *          Phone : 
+ *          About :
  *        
  *
  */
@@ -64,7 +66,26 @@ const router = express.Router()
  */
 
 router.route("/organization/createorganization").post(createorganization)
-// router.route("/organization/vieworganization").get(vieworganization)
+
+
+
+/**
+ * @swagger
+ * /api/v1/organization/vieworganization:
+ *   get:
+ *     summary: get all organization
+ *     tags: [organization]
+ *     responses:
+ *       200:
+ *         description: get All organization
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: '#/components/schemas/organization'
+ */
+router.route("/organization/vieworganization").get(vieworganization)
 // router.route("/organization/deleteorganizationDetails/:organizationId").delete(deleteorganizationDetails)
 // router.route("/organization/updateorganizationDetails").put(updateorganizationDetails)
 
