@@ -13,6 +13,7 @@ app.use(cors())
 const employeeTask = require('./Routes/employee_routes')
 const Appraisal = require('./Routes/Appraisal_routes')
 const travelRequest = require('./Routes/Appraisal_routes')
+const TrainingSchedule = require('./Routes/TrainingSchedule_routes')
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -38,5 +39,6 @@ const options = {
   app.use("/api/v1",employeeTask)
   app.use("/api/v1",Appraisal)
   app.use("/api/v1",travelRequest)
+  app.use("/api/v1",TrainingSchedule)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 
