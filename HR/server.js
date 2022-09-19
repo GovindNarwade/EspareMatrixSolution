@@ -11,6 +11,7 @@ app.use(express.json())
 app.use(express.static('public'));
 app.use(cors())
 const employeeTask = require('./Routes/employee_routes')
+const Appraisal = require('./Routes/Appraisal_routes')
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -34,5 +35,6 @@ const options = {
   const specs = swaggerJsDoc(options);
   app.use("/api-docs-HR", swaggerUI.serve, swaggerUI.setup(specs));
   app.use("/api/v1",employeeTask)
+  app.use("/api/v1",Appraisal)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 
