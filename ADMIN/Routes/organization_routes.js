@@ -1,6 +1,6 @@
 
 const express = require("express")
-const {createorganization,vieworganization,deleteorganizationDetails,updateorganizationDetails} = require("../controller/organization_controller")
+const { createorganization, vieworganization, deleteorganizationDetails, updateorganizationDetails } = require("../controller/organization_controller")
 const router = express.Router()
 /**
  * @swagger
@@ -16,19 +16,19 @@ const router = express.Router()
  *         - About
  *       properties:
  *         organizationId:
- *           type: Number
+ *           type: integer
  *           description: uniqueid
  *         Name:
- *           type: String
+ *           type: string
  *           description: Name 
  *         Email:
- *        type:String
- *           description:EmailID 
- *        Phone:
- *           type:Number
+ *           type: string
+ *           description: EmailID 
+ *         Phone:
+ *           type: integer
  *           description: Phone 
- *       About:
- *           type:String
+ *         About:
+ *           type: string
  *           description: About 
  * 
  * 
