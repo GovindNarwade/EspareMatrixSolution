@@ -357,7 +357,7 @@ router.put("/updateEmployee/:employeeId",employee.update);
  * @swagger
  * /employee/updateProfileDetails/{employeeId}:
  *   put:
- *     summary: Update details of an employee
+ *     summary: Update Profile details of an employee
  *     tags: [Employee]
  *     parameters:
  *         - in: path
@@ -463,7 +463,7 @@ router.put("/updateProfileDetails/:employeeId",upload.single("profile"),employee
  * @swagger
  * /employee/updateEducationDetails/{employeeId}:
  *   put:
- *     summary: Update details of an employee
+ *     summary: Update education details of an employee
  *     tags: [Employee]
  *     parameters:
  *         - in: path
@@ -568,7 +568,7 @@ router.put("/updateEducationDetails/:employeeId",employee.updateEducation);
  * @swagger
  * /employee/updateExperienceDetails/{employeeId}:
  *   put:
- *     summary: Update details of an employee
+ *     summary: Update experience details of an employee
  *     tags: [Employee]
  *     parameters:
  *         - in: path
@@ -620,15 +620,172 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 //_____________________________________ Attendance System Routes ____________________________________
 
+
+//----------------------------- Submit Attendance ---------------------------------
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     employee5:
+ *       type: object
+ *       required:
+ *         - LivePicture
+ *         - EmployeeId
+ *         - Department
+ *         - Role
+ *         - Name
+ *         - Date
+ *         - Time
+ *         - Month
+ *         - AttendanceCheckout
+ *       properties:
+ *         LivePicture:
+ *           type: string
+ *           description: Live image of an employee
+ *         EmployeeId:
+ *           type: string
+ *           description: The employee id 
+ *         Department:
+ *           type: string
+ *           description: Department of an employee
+ *         Role:
+ *           type: string
+ *           descripton: Role of an employee
+ *         Name:
+ *           type: string
+ *           descripton: Name of an employee
+ *         Date:
+ *           type: string
+ *           descripton: Current Date
+ *         Time:
+ *           type: string
+ *           descripton: Current Time 
+ *         Month:
+ *           type: string
+ *           descripton: Current Month
+ *         AttendanceCheckout:
+ *           type: string
+ *           descripton: AttendanceCheckout is Login or Logout
+ *       example:
+ *         EmployeeId: EM-SM101
+ *         Department: Finance
+ *         Role: Manager
+ *         Name: Aditya sasane
+ *         Date: 22-09-22
+ *         Time: 10:00 AM
+ *         Month: September
+ *         AttendanceCheckout: Login
+ */
+
+/**
+ * @swagger
+ * /employee/submitAttendance:
+ *   post:
+ *     summary: Submit Attendance
+ *     tags: [Employee]
+ *     requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/employee5'
+ *     responses:
+ *       200:
+ *         description: Attendance Submited Sucessfully!
+ *   
+ */
 router.post("/submitAttendance",upload.single("livePicture"),employee.submitAttendance);
 
 
 
 //_____________________________________ Leave Section Routes _________________________________________-
 
+
+//-------------------- Apply For Leave ------------------------------------------
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     employee6:
+ *       type: object
+ *       required:
+ *         - EmployeeId
+ *         - LeaveType
+ *         - LeaveDescription
+ *         - LeaveFrom
+ *         - LeaveTo
+ *         - Status
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The Auto-generated id of a employee
+ *         EmployeeId:
+ *           type: string
+ *           description: The employee id 
+ *         LeaveType:
+ *           type: string
+ *           description: Type of leave
+ *         LeaveDescription:
+ *           type: string
+ *           descripton: Description of leave
+ *         LeaveFrom:
+ *           type: string
+ *           descripton: Date of leave start
+ *         LeaveTo:
+ *           type: string
+ *           descripton: Date of leave end
+ *         Status:
+ *           type: string
+ *           descripton: status of leave application 
+ *       example:
+ *         EmployeeId: EM-SM101
+ *         LeaveType: Medical
+ *         LeaveDescription: Heavy Fever
+ *         LeaveFrom: 22-09-22
+ *         LeaveTo: 24-09-22
+ *         Status: A Waiting Approvel
+ */
+
+/**
+ * @swagger
+ * /employee/applyForLeave/{employeeId}:
+ *   post:
+ *     summary: Apply for leave
+ *     tags: [Employee]
+ *     requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/employee6'
+ *     responses:
+ *       200:
+ *         description: Leave Application Submited Sucessfully!
+ *   
+ */
 router.post("/applyForLeave/:employeeId",employee.applyForLeave);
 
 
+//-------------------- get leave application history ----------------------
+
+/**
+ * @swagger
+ * /employee/checkLeaveHistory/{employeeId}:
+ *   get:
+ *     summary: Returns history of leave application
+ *     tags: [Employee]
+ *     responses:
+ *       200:
+ *         description: history of leave application
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/employee5'
+ */
 router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
 
 
