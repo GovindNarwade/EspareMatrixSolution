@@ -2,7 +2,7 @@ const env = require('dotenv')
 
 env.config({path:"../config/.env"})
 
-const db = require("../../ADMIN/config/db")
+const db = require("../config/db")
 
 //data files
 const admin =require("./data/admin")
