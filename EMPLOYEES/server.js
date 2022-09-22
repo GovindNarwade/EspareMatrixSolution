@@ -6,9 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
 const specs = require("./config/swagger");
 
-
 const app = express();
-
 
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(bodyparser.json()); 

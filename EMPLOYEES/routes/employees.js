@@ -3,7 +3,11 @@ const router = express.Router();
 const upload = require("../config/multer");
 const employee = require("../controller/empController");
 
-//----------------------- Dash-Board Routes ------------------------------------
+//________________________________________ Dash-Board Routes ______________________________________________
+
+
+
+//------------------------ Fetch Employee -----------------------
 
 /**
  * @swagger
@@ -25,7 +29,13 @@ router.get("/getAllEmployee",employee.getAll);
 
 
 
-//------Register Employee------
+//---------- Fetch one employee with employeeId -----------------
+
+router.get("/getOneEmployee/:employeeId",employee.getOne);
+
+
+
+//-------------- Register Employee -------------------------------
 
 /**
  * @swagger
@@ -149,7 +159,7 @@ router.post("/registerEmployee",employee.register);
 
 
 
-//------Update Employee---------
+//--------------- Update Employee -------------------------------
 
 /**
  * @swagger
@@ -216,7 +226,7 @@ router.put("/updateEmployee/:employeeId",employee.update);
 
 
 
-//-------Update Profile Details---------
+//---------------- Update Profile Details --------------------------
 
 /**
  * @swagger
@@ -367,12 +377,12 @@ router.put("/updateEmployee/:employeeId",employee.update);
  *         description: details of an employee updated successfully
  * 
  */
-router.put("/updateProfileDetails/:employeeId",employee.updateProfile);
+router.put("/updateProfileDetails/:employeeId",upload.single("profile"),employee.updateProfile);
 
 
 
 
-//--------Update Education Details-------
+//---------------- Update Education Details -------------------------------
 
 /**
  * @swagger
@@ -478,7 +488,7 @@ router.put("/updateEducationDetails/:employeeId",employee.updateEducation);
 
 
 
-//---------Update Experience Details------
+//---------------- Update Experience Details ----------------------------------
 
 /**
  * @swagger
@@ -583,7 +593,7 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
 
 
 
-//-------- Delete Employee--------------------
+//----------------- Delete Employee ---------------------------------------------
 
 /**
  * @swagger
@@ -608,17 +618,24 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 
 
+//_____________________________________ Attendance System Routes ____________________________________
 
-//--------------------------Leave Section Routes------------------------------
+router.post("/submitAttendance",upload.single("livePicture"),employee.submitAttendance);
+
+
+
+//_____________________________________ Leave Section Routes _________________________________________-
 
 router.post("/applyForLeave/:employeeId",employee.applyForLeave);
 
 
 router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
 
+
 router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication);
 
+
 router.put("/rejectLeaveApplication/:employeeId",employee.rejectLeaveApplication);
-// router.post("/upload",upload.single("img"),employee.uploadImage);
+
 
 module.exports = router;

@@ -3,6 +3,7 @@ const config = require("../config/config");
 const bcrypt = require("bcrypt");
 
 const employeeSchema = new mongoose.Schema({
+  Profile: String,
   EmployeeId: {
     type: String
   },
