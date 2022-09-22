@@ -106,6 +106,46 @@ router.route("/CreateTrainingSchedule").post(CreateTrainingSchedule)
  *                 $ref: '#/components/schemas/TraingSchedule'
  */
 router.route("/GetAllTrainingSchedule").get(GetAllTrainingSchedule)
+/**
+ * @swagger
+ * /api/v1/deleteTrainingSchedule/{TravelScheduleId}:
+ *   delete:
+ *     summary: Delete an TravelSchedule
+ *     tags: [TraingSchedule]
+ *     parameters:
+ *         - in: path
+ *           name: TravelScheduleId
+ *           required: true
+ *           description: TravelScheduleId is required
+ *           schema:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: TravelSchedule delete successfully
+ *   
+ */
 router.route("/deleteTrainingSchedule/:TravelScheduleId").delete(deleteTrainingSchedule)
+/**
+ * @swagger
+ * /api/v1/updateTrainingScheduleDetails:
+ *   post:
+ *     summary: update TraingSchedule Details
+ *     tags: [TraingSchedule]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TraingSchedule'
+ *     responses:
+ *       200:
+ *         description: TraingSchedule update successfull
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TraingSchedule'
+ *       500:
+ *         description: Some server error
+ */
 router.route("/updateTrainingScheduleDetails").put(updateTrainingScheduleDetails)
 module.exports = router

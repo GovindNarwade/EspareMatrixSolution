@@ -105,6 +105,46 @@ router.route("/CreateTravelRequest").post(CreateTravelRequest)
  *                 $ref: '#/components/schemas/TravelRequest'
  */
 router.route("/GetAllTravelRequest").get(GetAllTravelRequest)
+/**
+ * @swagger
+ * /api/v1/deleteTravelRequest/{TravelRequestId}:
+ *   delete:
+ *     summary: Delete an TravelRequest
+ *     tags: [TravelRequest]
+ *     parameters:
+ *         - in: path
+ *           name: TravelRequestId
+ *           required: true
+ *           description: TravelRequest is required
+ *           schema:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: TravelRequest delete successfully
+ *   
+ */
 router.route("/deleteTravelRequest/:TravelRequestId").delete(deleteTravelRequest)
+/**
+ * @swagger
+ * /api/v1/updateTravelRequestDetails:
+ *   post:
+ *     summary: update Travel Request Details
+ *     tags: [TravelRequest]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TravelRequest'
+ *     responses:
+ *       200:
+ *         description: TravelRequest update successfull
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TravelRequest'
+ *       500:
+ *         description: Some server error
+ */
 router.route("/updateTravelRequestDetails").put(updateTravelRequestDetails)
 module.exports = router

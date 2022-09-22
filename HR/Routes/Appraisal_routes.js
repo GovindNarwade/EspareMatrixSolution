@@ -92,5 +92,47 @@ router.route("/CreateAppraisal").post(CreateAppraisal)
  */
 router.route("/GetAllAppraisal").get(GetAllAppraisal)
 router.route("/deleteAppraisal/:TaskId").delete(deleteAppraisal)
+/**
+ * @swagger
+ * /api/v1/updateAppraisalDetails:
+ *   post:
+ *     summary: update Appraisal Details
+ *     tags: [Appraisal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Appraisal'
+ *     responses:
+ *       200:
+ *         description: announcement update successfull
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appraisal'
+ *       500:
+ *         description: Some server error
+ */
 router.route("/updateAppraisalDetails").put(updateAppraisalDetails)
+/**
+ * @swagger
+ * /api/v1/deleteAppraisal/{AppraisalId}:
+ *   delete:
+ *     summary: Delete an Appraisal
+ *     tags: [Appraisal]
+ *     parameters:
+ *         - in: path
+ *           name: AppraisalId
+ *           required: true
+ *           description: AppraisalId is required
+ *           schema:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: Appraisal delete successfully
+ *   
+ */
+ router.route("/deleteAppraisal/:AppraisalId").delete(deleteAppraisal)
+
 module.exports = router

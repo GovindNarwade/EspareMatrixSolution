@@ -96,6 +96,46 @@ router.route("/CreateEmployeeTask").post(CreateEmployeeTask)
  *                 $ref: '#/components/schemas/employeeTask'
  */
 router.route("/GetAllEmplyeeTask").get(GetAllEmplyeeTask)
+/**
+ * @swagger
+ * /api/v1/deleteEmplyeeTask/{TaskId}:
+ *   delete:
+ *     summary: Delete an employeeTask
+ *     tags: [employeeTask]
+ *     parameters:
+ *         - in: path
+ *           name: TaskId
+ *           required: true
+ *           description: TaskId is required
+ *           schema:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: employeeTask delete successfully
+ *   
+ */
 router.route("/deleteEmplyeeTask/:TaskId").delete(deleteEmplyeeTask)
+/**
+ * @swagger
+ * /api/v1/updateEmplyeeTaskDetails:
+ *   post:
+ *     summary: update employeeTask Details
+ *     tags: [employeeTask]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/employeeTask'
+ *     responses:
+ *       200:
+ *         description: employeeTask update successfull
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/employeeTask'
+ *       500:
+ *         description: Some server error
+ */
 router.route("/updateEmplyeeTaskDetails").put(updateEmplyeeTaskDetails)
 module.exports = router

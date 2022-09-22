@@ -14,6 +14,14 @@ const employeeTask = require('./Routes/employeeTask_routes')
 const Appraisal = require('./Routes/Appraisal_routes')
 const travelRequest = require('./Routes/Appraisal_routes')
 const TrainingSchedule = require('./Routes/TrainingSchedule_routes')
+const AssignManager = require('./Routes/AssignManager_routes')
+const admin = require("./Routes/admin_routes")
+const group = require("./Routes/group_routes")
+const origanization = require("./Routes/organization_routes")
+const Shift = require('./Routes/Shift_routes')
+const Announcement = require('./Routes/AnnounceMent_route')
+const Leave = require('./Routes/leave_routes');
+const Department = require('./Routes/departMent_routes');
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -40,5 +48,13 @@ const options = {
   app.use("/api/v1",Appraisal)
   app.use("/api/v1",travelRequest)
   app.use("/api/v1",TrainingSchedule)
+  app.use("/api/v1",AssignManager)
+  app.use("/api/v1",Shift)
+  app.use("/api/v1/admin",admin)
+app.use("/api/v1/group",group)
+app.use("/api/v1",origanization)
+app.use("/api/v1",Announcement)
+app.use("/api/v1",Leave)
+app.use("/api/v1",Department)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 
