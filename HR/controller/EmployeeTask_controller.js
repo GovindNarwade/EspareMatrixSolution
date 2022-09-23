@@ -27,7 +27,16 @@ try {
 }
 exports.GetAllEmplyeeTask = async(req,res)=>{
     try {
-        const result = await EmplyeeTask.find()
+        const result = await EmplyeeTask.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"EmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,

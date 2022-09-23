@@ -29,7 +29,16 @@ try {
 }
 exports.GetAllTravelRequest = async(req,res)=>{
     try {
-        const result = await TravelRequest.find()
+        const result = await TravelRequest.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"EmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,

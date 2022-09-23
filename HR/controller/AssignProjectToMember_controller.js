@@ -29,7 +29,16 @@ try {
 }
 exports.GetAllProjectToAssignMember = async(req,res)=>{
     try {
-        const result = await ProjectToAssignMember.find()
+        const result = await ProjectToAssignMember.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"LeadEmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,

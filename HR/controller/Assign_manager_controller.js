@@ -23,7 +23,16 @@ try {
 }
 exports.GetAllAssignManager = async(req,res)=>{
     try {
-        const result = await AssignManager.find()
+        const result = await AssignManager.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"EmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,

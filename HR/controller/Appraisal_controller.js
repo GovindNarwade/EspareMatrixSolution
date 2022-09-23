@@ -26,7 +26,16 @@ try {
 }
 exports.GetAllAppraisal = async(req,res)=>{
     try {
-        const result = await Appraisal.find()
+        const result = await Appraisal.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"EmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,

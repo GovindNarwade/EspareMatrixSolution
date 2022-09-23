@@ -29,7 +29,16 @@ try {
 }
 exports.GetAllTrainingSchedule = async(req,res)=>{
     try {
-        const result = await TrainingSchedule.find()
+        const result = await TrainingSchedule.aggregate([
+            {
+$lookup:{
+    from:"employees",
+    localField:"EmployeeId",
+    foreignField:"EmployeeId",
+    as:"Employee"
+}
+            }
+        ]) 
         res.json({
             count:result.length,
             success:true,
