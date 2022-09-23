@@ -26,9 +26,13 @@ const EventSchema = mongoose.Schema({
     EventPostedBy:{
         type:String
     },
-file:{
-type:String
-}
+    EventLocation:{
+        type:String
+    },
+    EventArrangeFor:{
+        type:String
+    },
+
 },{
 timestamps:true
 })
