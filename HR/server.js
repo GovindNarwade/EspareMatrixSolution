@@ -25,6 +25,7 @@ const Department = require('./Routes/departMent_routes');
 const holiday = require('./Routes/holiday_routes');
 const workShift = require('./Routes/workShift_routes');
 const Project = require('./Routes/workShift_routes');
+const ProjectToAssignMember = require('./Routes/AssignProjectToMember_routes');
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -62,5 +63,6 @@ app.use("/api/v1",Department)
 app.use("/api/v1",holiday)
 app.use("/api/v1",workShift)
 app.use("/api/v1",Project)
+app.use("/api/v1",ProjectToAssignMember)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 
