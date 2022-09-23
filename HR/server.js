@@ -22,6 +22,9 @@ const Shift = require('./Routes/Shift_routes')
 const Announcement = require('./Routes/AnnounceMent_route')
 const Leave = require('./Routes/leave_routes');
 const Department = require('./Routes/departMent_routes');
+const holiday = require('./Routes/holiday_routes');
+const workShift = require('./Routes/workShift_routes');
+const Project = require('./Routes/workShift_routes');
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -56,5 +59,8 @@ app.use("/api/v1",origanization)
 app.use("/api/v1",Announcement)
 app.use("/api/v1",Leave)
 app.use("/api/v1",Department)
+app.use("/api/v1",holiday)
+app.use("/api/v1",workShift)
+app.use("/api/v1",Project)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 

@@ -1,7 +1,7 @@
 const admin = require("../model/admin_model")
 brycpt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const Adminlogin = async(req,res) =>{
+exports.Adminlogin = async(req,res) =>{
     try {
      const {Email,Password} = req.body
      const result = await admin.findOne({Email}) 
@@ -46,4 +46,4 @@ const Adminlogin = async(req,res) =>{
       console.log(error);
     }
  }
- module.exports = Adminlogin
+ 

@@ -1,6 +1,6 @@
 const express = require("express")
 const {getAdmin} = require("../controller/admin_controller")
-const Adminlogin = require("../controller/adminLogin_controller")
+const {Adminlogin} = require("../controller/adminLogin_controller")
 const router = express.Router()
 /**
  * @swagger
@@ -42,11 +42,9 @@ const router = express.Router()
  *                 $ref: '#/components/schemas/admin'
  */
 router.route("/getAdmin").get(getAdmin)
-
-
 /**
  * @swagger
- * /api/v1/admin/adminlogin:
+ * /api/v1/admin/Adminlogin:
  *   post:
  *     summary: admin login
  *     tags: [admin]
@@ -66,7 +64,7 @@ router.route("/getAdmin").get(getAdmin)
  *       500:
  *         description: Some server error
  */
- router.route("/adminlogin").post(Adminlogin)
+ router.route("/Adminlogin").post(Adminlogin)
 
 module.exports = router
 
