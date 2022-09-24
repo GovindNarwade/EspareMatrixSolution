@@ -29,6 +29,7 @@ const ProjectToAssignMember = require('./Routes/AssignProjectToMember_routes');
 const Event = require('./Routes/Event_routes');
 const forgotPasswordAdmin = require('./Routes/forgotPassword_routes');
 const salary = require('./Routes/salary_routes');
+const employee = require('./Routes/employees');
 const options = {
     definition: {
       openapi: "3.0.0",
@@ -70,5 +71,6 @@ app.use("/api/v1",ProjectToAssignMember)
 app.use("/api/v1",Event)
 app.use("/api/v1",forgotPasswordAdmin)
 app.use("/api/v1",salary)
+app.use("/employee",employee)
 app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT || 4000}`))
 
