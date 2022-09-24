@@ -4,11 +4,12 @@ exports.createsalary = async(req,res)=>{
     const result = await salary.create({
         salarySipId:Math.floor((Math.random()*100000)+1),
         EmployeeId:req.body.EmployeeId,
-        BankName:req.body.BankName,
-        BankAccountNo:req.body.BankAccountNo,
-        IFSCCode:req.body.IFSCCode,
-        AdharNumber:req.body.AdharNumber,
-        EnrollmentId:req.body.EnrollmentId,
+        Designation:req.body.Designation,
+        BasicPay:req.body.BasicPay,
+        HouseRentAllowance:req.body.HouseRentAllowance,
+        SpecialAllowance:req.body.SpecialAllowance,
+        ConveyanceAllowance:req.body.ConveyanceAllowance,
+        MedicalAllowance:req.body.MedicalAllowance,
     
      })
      res.json({

@@ -5,25 +5,29 @@ const salarySchema = mongoose.Schema({
         type:Number,
     },
     EmployeeId:{
-        type:Number,
-      
-    },
-    BankName:{
         type:String,
       
     },
-    BankAccountNo:{
+    Designation:{
+        type:String,
+      
+    },
+    BasicPay:{
         type:Number,
       
     },
-    IFSCCode:{
+    HouseRentAllowance:{
+        type:Number,
+      
+    },
+    SpecialAllowance:{
         type:Number
     },
    
-    AdharNumber:{
-        type:String
+    ConveyanceAllowance:{
+        type:Number
     },
-    EnrollmentId:{
+    MedicalAllowance:{
         type:Number
     },
   
