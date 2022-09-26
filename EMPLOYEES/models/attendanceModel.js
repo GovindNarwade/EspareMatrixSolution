@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const attendanceSchema = new mongoose.Schema({
-      LivePicture: {
+      LogInPicture: {
+        type: String
+      },
+      LogOutPicture: {
         type: String
       },
       EmployeeId: {
@@ -19,10 +22,16 @@ const attendanceSchema = new mongoose.Schema({
       Date: {
         type: String
       },
-      Time: {
+      StartTime: {
+        type: String
+      },
+      EndTime: {
         type: String
       },
       Month: {
+        type: String
+      },
+      Location: {
         type: String
       },
       AttendanceCheckout: {

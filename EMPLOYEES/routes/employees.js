@@ -29,9 +29,13 @@ router.get("/getAllEmployee",employee.getAll);
 
 
 
+
+
 //---------- Fetch one employee with employeeId -----------------
 
 router.get("/getOneEmployee/:employeeId",employee.getOne);
+
+
 
 
 
@@ -159,6 +163,8 @@ router.post("/registerEmployee",employee.register);
 
 
 
+
+
 //--------------- Update Employee -------------------------------
 
 /**
@@ -222,6 +228,8 @@ router.post("/registerEmployee",employee.register);
  * 
  */
 router.put("/updateEmployee/:employeeId",employee.update);
+
+
 
 
 
@@ -382,6 +390,8 @@ router.put("/updateProfileDetails/:employeeId",upload.single("profile"),employee
 
 
 
+
+
 //---------------- Update Education Details -------------------------------
 
 /**
@@ -484,6 +494,8 @@ router.put("/updateProfileDetails/:employeeId",upload.single("profile"),employee
  * 
  */
 router.put("/updateEducationDetails/:employeeId",employee.updateEducation);
+
+
 
 
 
@@ -593,6 +605,8 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
 
 
 
+
+
 //----------------- Delete Employee ---------------------------------------------
 
 /**
@@ -618,7 +632,11 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 
 
+
+
 //_____________________________________ Attendance System Routes ____________________________________
+
+
 
 
 //----------------------------- Submit Attendance ---------------------------------
@@ -630,7 +648,7 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
  *     employee5:
  *       type: object
  *       required:
- *         - LivePicture
+ *         - StartPicture
  *         - EmployeeId
  *         - Department
  *         - Role
@@ -638,6 +656,7 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
  *         - Date
  *         - Time
  *         - Month
+ *         - Location
  *         - AttendanceCheckout
  *       properties:
  *         LivePicture:
@@ -651,22 +670,25 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
  *           description: Department of an employee
  *         Role:
  *           type: string
- *           descripton: Role of an employee
+ *           description: Role of an employee
  *         Name:
  *           type: string
- *           descripton: Name of an employee
+ *           description: Name of an employee
  *         Date:
  *           type: string
- *           descripton: Current Date
+ *           description: Current Date
  *         Time:
  *           type: string
- *           descripton: Current Time 
+ *           description: Current Time 
  *         Month:
  *           type: string
- *           descripton: Current Month
+ *           description: Current Month
+ *         Location:
+ *           type: string
+ *           description: Current Location
  *         AttendanceCheckout:
  *           type: string
- *           descripton: AttendanceCheckout is Login or Logout
+ *           description: AttendanceCheckout is Login or Logout
  *       example:
  *         EmployeeId: EM-SM101
  *         Department: Finance
@@ -675,6 +697,7 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
  *         Date: 22-09-22
  *         Time: 10:00 AM
  *         Month: September
+ *         Location : MagarPatta,Hadapsar,Pune
  *         AttendanceCheckout: Login
  */
 
@@ -695,14 +718,20 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
  *         description: Attendance Submited Sucessfully!
  *   
  */
-router.post("/submitAttendance",upload.single("livePicture"),employee.submitAttendance);
+router.post("/submitAttendance",upload.single("LivePicture"),employee.submitAttendance);
+
+
+
+router.get("/getAttendance/:employeeId",employee.getAttendance);
+
 
 
 
 //_____________________________________ Leave Section Routes _________________________________________-
 
 
-//-------------------- Apply For Leave ------------------------------------------
+
+//------------------------------ Apply For Leave ------------------------------------------
 
 /**
  * @swagger
@@ -768,7 +797,11 @@ router.post("/submitAttendance",upload.single("livePicture"),employee.submitAtte
 router.post("/applyForLeave/:employeeId",employee.applyForLeave);
 
 
-//-------------------- get leave application history ----------------------
+
+
+
+
+//---------------------------- get leave application history ----------------------
 
 /**
  * @swagger
@@ -788,6 +821,10 @@ router.post("/applyForLeave/:employeeId",employee.applyForLeave);
  */
 router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
 
+
+
+//---------------------------- get leaves count -----------------------------------
+router.get("/getLeavesCount/:employeeId",employee.getLeavesCount);
 
 router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication);
 

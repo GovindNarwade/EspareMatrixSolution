@@ -2,16 +2,21 @@ const employeeModel = require("../models/empModel");
 const leaveModel = require("../models/leaveModel");
 const cloudinary = require("../config/cloudinary");
 const attendanceModel = require("../models/attendanceModel");
-
+const payrollModel = require("../models/payrollModel");
+const hours = require("convert-string-time");
 
 //______________________________ Employee Dashboard ___________________________
 
 
+
+
 //------------------ Register Empolyee -----------------------------
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {    
+    let count = (await employeeModel.countDocuments()+1)+100;
     const details = new employeeModel({
-        EmployeeId: "EM-SM"+Math.floor((Math.random()*10000)+1),
+        EmployeeId: "EM-SM"+count,
+        // EmployeeId: "EM-SM"+Math.floor((Math.random()*10000)+1),
         JoiningDate: req.body.JoiningDate,
         FirstName: req.body.FirstName,
         LastName: req.body.LastName,
@@ -30,7 +35,6 @@ exports.register = (req, res) => {
         EmailId: req.body.EmailId,
         Password: req.body.Password,
     });
-
     details.save((err) => {
         if (err) {
             res.send(err);
@@ -41,15 +45,21 @@ exports.register = (req, res) => {
 
 }
 
+
+
+
 //------------------ Fetch All Employees Details-------------
 
-exports.getAll = (req, res) => {
-
+exports.getAll = async (req, res) => {
+    let result;
     employeeModel.find({}, (err, result) => {
         res.send(result);
     });
 
 }
+
+
+
 
 
 //------------------ Fetch One Employee with EmployeeId --------------------------
@@ -65,6 +75,10 @@ exports.getOne = (req,res) => {
         }
     });
 }
+
+
+
+
 
 //------------------ Update employee details -----------------------------
 exports.update = (req, res) => {
@@ -85,6 +99,9 @@ exports.update = (req, res) => {
         }
     });
 }
+
+
+
 
 
 //------------------ Update Profile Details ----------------
@@ -132,7 +149,11 @@ exports.updateProfile = async (req, res) => {
 }
 
 
+
+
+
 //------------------ Update education details ---------------
+
 exports.updateEducation = (req, res) => {
     var ID = req.params.employeeId;
 
@@ -161,7 +182,11 @@ exports.updateEducation = (req, res) => {
 }
 
 
+
+
+
 //------------------ Update experience details ----------------
+
 exports.updateExperience = (req, res) => {
     var ID = req.params.employeeId;
 
@@ -191,6 +216,7 @@ exports.updateExperience = (req, res) => {
 
 
 //------------------- Delete One Employee -----------------------
+
 exports.delete = (req, res) => {
     var ID = req.params.employeeId;
 
@@ -207,31 +233,209 @@ exports.delete = (req, res) => {
 
 
 
+
 //_________________________________ Attendance System ________________________________
 
 exports.submitAttendance = async (req,res) => {
      
     const result = await cloudinary.uploader.upload(req.file.path,{folder:"EmployeeAttendance",use_filename : true, unique_filename : false});
 
-     const attendance = new attendanceModel({
-        LivePicture: result.secure_url,
-        EmployeeId: req.body.EmployeeId,
-        Department: req.body.Department,
-        Role: req.body.Role,
-        Name: req.body.Name,
-        Date: req.body.Date,
-        Time: req.body.Time,
-        Month: req.body.Month,
-        AttendanceCheckout: req.body.AttendanceCheckout
-     });
+    const data = await attendanceModel.findOne({EmployeeId: req.body.EmployeeId}).sort({_id:-1});
+    console.log(data);
+    if(data){
+        if(req.body.Date == data.Date){
+            if(req.body.AttendanceCheckout == "LogOut"){
 
-     attendance.save((err)=>{
-        if(err){
-            res.send(err);
+                const data = await attendanceModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{EndPicture: result.secure_url,EndTime: req.body.Time,AttendanceCheckout: req.body.AttendanceCheckout,Location: req.body.Location}).sort({_id:-1});
+            }
+           const Result = await attendanceModel.findOne({EmployeeId: req.body.EmployeeId}).sort({_id:-1});
+                let StartTime = Result.StartTime;
+                let EndTime = Result.EndTime;
+                
+                let StartHours = hours.to24Hours(StartTime);
+                let EndHours = hours.to24Hours(EndTime);
+                
+                let LogIn = StartHours.split(":");
+                let LogOut = EndHours.split(":");
+    
+                let duration1 = parseInt(LogOut[0]) - parseInt(LogIn[0]);
+                let duration2 = parseInt(LogOut[1]) - parseInt(LogIn[1]);
+                
+                const totalTime = (duration1+":" +duration2);
+                console.log(duration1);
+                console.log(duration2);
+                payrollModel.findOne({EmployeeId: req.body.EmployeeId},(err,result)=>{
+                    if(!err){
+                        if(result){
+                            if(duration1>=8){
+                                payrollModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{PresentDays: result.PresentDays+1},(err,result)=>{
+                                    if(err){
+                                        res.json({
+                                            Sucess: false,
+                                            msg: "Error: "+err
+                                        });
+                                    }else{
+                                        res.json({
+                                            Sucess: true,
+                                            msg: "PresentDay"
+                                        });
+                                    }
+                                });
+                            }else if(duration1>=4){
+                                payrollModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{HalfDays: result.HalfDays+1},(err,result)=>{
+                                    if(err){
+                                        res.json({
+                                            Sucess: false,
+                                            msg: "Error: "+err
+                                        });
+                                    }else{
+                                        res.json({
+                                            Sucess: true,
+                                            msg: "HalfDay"
+                                        });
+                                    }
+                                });
+                            }else{
+                                payrollModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{AbsentDays: result.AbsentDays+1},(err,result)=>{
+                                    if(err){
+                                        res.json({
+                                            Sucess: false,
+                                            msg: "Error: "+err
+                                        });
+                                    }else{
+                                        res.json({
+                                            Sucess: true,
+                                            msg: "AbsentDay"
+                                        });
+                                    }
+                                });
+                            }
+                        }else{
+                            if(duration1>=8){
+                                payrollModel.insertMany({
+                                    EmployeeId: req.body.EmployeeId,
+                                    PresentDays: 1,
+                                    AbsentDays: 0,
+                                    HalfDays: 0
+                                },(err,result)=>{
+                                    if(!err){
+                                        res.json({
+                                            Sucess: true,
+                                            msg: "Employee PayrollData Sucessfully Inserted"
+                                        });
+                                    }
+                                });
+                            }else if(duration1>=4){
+                                payrollModel.insertMany({
+                                    EmployeeId: req.body.EmployeeId,
+                                    PresentDays: 0,
+                                    AbsentDays: 0,
+                                    HalfDays: 1
+                                },(err,result)=>{
+                                    res.json({
+                                        Sucess: true,
+                                        msg: "Employee PayrollData Sucessfully Inserted"
+                                    });
+                                });
+                            }else{
+                                payrollModel.insertMany({
+                                    EmployeeId: req.body.EmployeeId,
+                                    PresentDays: 0,
+                                    AbsentDays: 1,
+                                    HalfDays: 0
+                                },(err,result)=>{
+                                    res.json({
+                                        Sucess: true,
+                                        msg: "Employee PayrollData Sucessfully Inserted"
+                                    });
+                                })
+                            }
+                            
+                        }
+                    }
+                });
         }else{
-            res.send("Attendance Submited Sucessfully!");
+            const attendance = new attendanceModel({
+                StartPicture: result.secure_url,
+                EmployeeId: req.body.EmployeeId,
+                Department: req.body.Department,
+                Role: req.body.Role,
+                Name: req.body.Name,
+                Date: req.body.Date,
+                StartTime: req.body.Time,
+                Month: req.body.Month,
+                Location: req.body.Location,
+                AttendanceCheckout: req.body.AttendanceCheckout
+             });
+        
+             attendance.save((err)=>{
+                if(err){
+                    res.json({
+                        Sucess: false,
+                        msg: "Error: "+err,
+                        data: null
+                    });            
+                }else{
+                    res.json({
+                        Sucess: true,
+                        msg: "Attendance Submited Sucessfully!!!!"
+                    });
+                }
+                
+             });
         }
-     });
+
+    }else{
+        const attendance = new attendanceModel({
+            StartPicture: result.secure_url,
+            EmployeeId: req.body.EmployeeId,
+            Department: req.body.Department,
+            Role: req.body.Role,
+            Name: req.body.Name,
+            Date: req.body.Date,
+            StartTime: req.body.Time,
+            Month: req.body.Month,
+            Location: req.body.Location,
+            AttendanceCheckout: req.body.AttendanceCheckout
+         });
+    
+         attendance.save((err)=>{
+            if(err){
+                res.json({
+                    Sucess: false,
+                    msg: "Error: "+err,
+                    data: null
+                });            
+            }else{
+                res.json({
+                    Sucess: true,
+                    msg: "Attendance Submited Sucessfully!"
+                });
+            }
+            
+         });
+    }
+}
+
+
+exports.getAttendance = (req,res) => {
+    const ID = req.params.employeeId;
+
+    payrollModel.findOne({EmployeeId: ID},(err,result)=>{
+        if(err){
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err
+            });
+        }else{
+            res.json({
+                Sucess: true,
+                PresentDays: result.PresentDays,
+                HalfDays: result.HalfDays,
+                AbsentDays: result.AbsentDays
+            });
+        }
+    });
 }
 
 
@@ -260,6 +464,8 @@ exports.applyForLeave = (req, res) => {
 }
 
 
+
+
 exports.checkLeaveHistory = (req, res) => {
     const ID = req.params.employeeId;
 
@@ -273,21 +479,81 @@ exports.checkLeaveHistory = (req, res) => {
 }
 
 
-exports.acceptLeaveApplication = (req, res) => {
+
+exports.getLeavesCount = (req,res) =>{
+    const ID = req.params.employeeId;
+
+    payrollModel.findOne({EmployeeId: ID},(err,result)=>{
+        if(err){
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err
+            });
+        }else{
+            res.json({
+                Sucess: true,
+                AllLeaves: result.AllLeaves,
+                MedicalLeaves: result.MedicalLeaves,
+                CasualLeaves: result.CasualLeaves
+            });
+        }
+    });
+}
+
+
+exports.acceptLeaveApplication = async (req, res) => {
     const ID = req.params.employeeId;
 
     const status = {
         Status: "Approved"
     }
 
-    leaveModel.findOneAndUpdate({ EmployeeId: ID }, status, (err, result) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send("LeaveForm Approved Sucessfully!");
-        }
-    });
+
+    const result = await leaveModel.findOneAndUpdate({ EmployeeId: ID }, status).sort({_id:-1});
+            let medical;
+            let casual;
+
+           payrollModel.findOne({EmployeeId: ID},(err,data)=>{
+                if(err){
+                    data.json({
+                        Status: false,
+                        msg: "Error: "+err
+                    }); 
+                }else{
+                    if(result.LeaveType == "Medical"){
+                        if(data.MedicalLeaves == 0){
+                            medical = 1;
+                        }else{
+                            medical = (data.MedicalLeaves + 1);
+                        }
+                    }else if(result.LeaveType == "Casual"){
+                        if(data.CasualLeaves === null){
+                            casual = 1;
+                        }else{
+                            casual = (data.CasualLeaves + 1);
+                        }
+                    }
+    
+                    payrollModel.findOneAndUpdate({EmployeeId: ID},{AllLeaves: (data.AllLeaves + 1),MedicalLeaves: medical,CasualLeaves: casual},(err,result)=>{
+                        if(err){
+                            res.json({
+                                Status: false,
+                                msg: "Error: "+err
+                            }); 
+                        }else{
+                            res.json({
+                                Status: true,
+                                msg: "Leave Application Approved Sucessfully!",
+                            });
+                        }
+                    })
+                }
+                
+           });
+        
 }
+
+
 
 
 exports.rejectLeaveApplication = (req, res) => {
