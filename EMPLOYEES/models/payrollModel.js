@@ -24,6 +24,14 @@ const payrollSchema = new mongoose.Schema({
     CasualLeaves: {
         type: Number,
         default: 0
+    },
+    LateLogin: {
+        type: Number,
+        default: 0
+    },
+    EarlyLogout: {
+        type: Number,
+        default: 0
     }
 });
 

@@ -238,23 +238,54 @@ exports.delete = (req, res) => {
 
 exports.submitAttendance = async (req,res) => {
      
-    const result = await cloudinary.uploader.upload(req.file.path,{folder:"EmployeeAttendance",use_filename : true, unique_filename : false});
+    const response = await cloudinary.uploader.upload(req.file.path,{folder:"EmployeeAttendance",use_filename : true, unique_filename : false});
 
     const data = await attendanceModel.findOne({EmployeeId: req.body.EmployeeId}).sort({_id:-1});
-    console.log(data);
+
     if(data){
         if(req.body.Date == data.Date){
+
             if(req.body.AttendanceCheckout == "LogOut"){
 
-                const data = await attendanceModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{EndPicture: result.secure_url,EndTime: req.body.Time,AttendanceCheckout: req.body.AttendanceCheckout,Location: req.body.Location}).sort({_id:-1});
+                const data = await attendanceModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{LogOutPicture: response.secure_url,EndTime: req.body.Time,AttendanceCheckout: req.body.AttendanceCheckout,Location: req.body.Location}).sort({_id:-1});
             }
+
            const Result = await attendanceModel.findOne({EmployeeId: req.body.EmployeeId}).sort({_id:-1});
+
                 let StartTime = Result.StartTime;
                 let EndTime = Result.EndTime;
                 
+
                 let StartHours = hours.to24Hours(StartTime);
                 let EndHours = hours.to24Hours(EndTime);
                 
+
+                const Data = await payrollModel.findOne({EmployeeId: req.body.EmployeeId});
+                if(StartTime > "10:00 AM"){
+
+                    payrollModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{LateLogin : (Data.LateLogin + 1)},(err,result)=>{
+                        if(err){
+                            res.json({
+                                Sucess: false,
+                                msg: "Error: "+err
+                            });
+                        }
+                    });
+                }
+
+                if(EndTime < "06:00 PM"){
+
+                    payrollModel.findOneAndUpdate({EmployeeId: req.body.EmployeeId},{EarlyLogout : (Data.EarlyLogout + 1)},(err,result)=>{
+                        if(err){
+                            res.json({
+                                Sucess: false,
+                                msg: "Error: "+err
+                            });
+                        }
+                    });
+                }
+
+
                 let LogIn = StartHours.split(":");
                 let LogOut = EndHours.split(":");
     
@@ -262,8 +293,8 @@ exports.submitAttendance = async (req,res) => {
                 let duration2 = parseInt(LogOut[1]) - parseInt(LogIn[1]);
                 
                 const totalTime = (duration1+":" +duration2);
-                console.log(duration1);
-                console.log(duration2);
+                
+                
                 payrollModel.findOne({EmployeeId: req.body.EmployeeId},(err,result)=>{
                     if(!err){
                         if(result){
@@ -356,7 +387,7 @@ exports.submitAttendance = async (req,res) => {
                 });
         }else{
             const attendance = new attendanceModel({
-                StartPicture: result.secure_url,
+                LogInPicture: response.secure_url,
                 EmployeeId: req.body.EmployeeId,
                 Department: req.body.Department,
                 Role: req.body.Role,
