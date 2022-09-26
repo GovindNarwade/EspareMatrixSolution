@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../config/multer");
 const employee = require("../controller/empController");
+const {Employeelogin} = require("../controller/empLogin_controller");
 
 //________________________________________ Dash-Board Routes ______________________________________________
 
@@ -793,6 +794,33 @@ router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication
 
 
 router.put("/rejectLeaveApplication/:employeeId",employee.rejectLeaveApplication);
+
+
+/**
+ * @swagger
+ * /employee/Employeelogin:
+ *   post:
+ *     summary: Employee  login
+ *     tags: [Employee]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Employee'
+ *     responses:
+ *       200:
+ *         description: Employee login successfull
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       500:
+ *         description: Some server error
+ */
+
+router.route("/Employeelogin").post(Employeelogin)
+
 
 
 module.exports = router;
