@@ -625,8 +625,6 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
 
 
 
-
-
 //----------------- Delete Employee ---------------------------------------------
 
 /**
@@ -660,7 +658,6 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 
 //----------------------------- Submit Attendance ---------------------------------
-
 
 
 /**
@@ -771,137 +768,6 @@ router.get("/getAttendance/:employeeId",employee.getAttendance);
 
 
 
-//_____________________________________ Leave Section Routes _________________________________________-
-
-
-
-//------------------------------ Apply For Leave ------------------------------------------
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     employee6:
- *       type: object
- *       required:
- *         - EmployeeId
- *         - LeaveType
- *         - LeaveDescription
- *         - LeaveFrom
- *         - LeaveTo
- *         - Status
- *       properties:
- *         id:
- *           type: integer
- *           description: The Auto-generated id of a employee
- *         EmployeeId:
- *           type: string
- *           description: The employee id 
- *         LeaveType:
- *           type: string
- *           description: Type of leave
- *         LeaveDescription:
- *           type: string
- *           descripton: Description of leave
- *         LeaveFrom:
- *           type: string
- *           descripton: Date of leave start
- *         LeaveTo:
- *           type: string
- *           descripton: Date of leave end
- *         Status:
- *           type: string
- *           descripton: Status of leave application
- *         
- *       example:
- *         EmployeeId: EM-SM101
- *         LeaveType: Medical
- *         LeaveDescription: Heavy Fever
- *         LeaveFrom: 22-09-22
- *         LeaveTo: 24-09-22
- */
-
-/**
- * @swagger
- * /employee/applyForLeave:
- *   post:
- *     summary: Apply for leave
- *     tags: [Employee]
- *     requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/employee6'
- *     responses:
- *       200:
- *         description: Leave Application Submited Sucessfully!
- *   
- */
-router.post("/applyForLeave",employee.applyForLeave);
-
-
-
-
-
-
-//---------------------------- get leave application history ----------------------
-
-/**
- * @swagger
- * /employee/checkLeaveHistory/{employeeId}:
- *   get:
- *     summary: Returns history of leave application
- *     tags: [Employee]
- *     parameters: 
- *         - in: path
- *           name: employeeId
- *           required: true
- *           description: employeeId is required
- *           schema:
- *              type: string
- * 
- *     responses:
- *       200:
- *         description: history of leave application
- *         
- */
-router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
-
-
-
-
-
-
-//---------------------------- get leaves count -----------------------------------
-
-/**
- * @swagger
- * /employee/getLeavesCount/{employeeId}:
- *   get:
- *     summary: Returns LeavesCount of employee
- *     tags: [Employee]
- *     parameters: 
- *         - in: path
- *           name: employeeId
- *           required: true
- *           description: employeeId is required
- *           schema:
- *              type: string
- * 
- *     responses:
- *       200:
- *         description: Returns LeaveCount of employee
- *         
- */
-router.get("/getLeavesCount/:employeeId",employee.getLeavesCount);
-
-
-
-
-
-
-
 
 router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication);
 
@@ -910,3 +776,5 @@ router.put("/rejectLeaveApplication/:employeeId",employee.rejectLeaveApplication
 
 
 module.exports = router;
+
+
