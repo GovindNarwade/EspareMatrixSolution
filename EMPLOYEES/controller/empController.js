@@ -463,7 +463,9 @@ exports.getAttendance = (req,res) => {
                 Sucess: true,
                 PresentDays: result.PresentDays,
                 HalfDays: result.HalfDays,
-                AbsentDays: result.AbsentDays
+                AbsentDays: result.AbsentDays,
+                LateLogin: result.LateLogin,
+                EarlyLogout: result.EarlyLogout
             });
         }
     });
@@ -477,7 +479,7 @@ exports.getAttendance = (req,res) => {
 exports.applyForLeave = (req, res) => {
 
     let Form = new leaveModel({
-        EmployeeId: req.params.employeeId,
+        EmployeeId: req.body.EmployeeId,
         LeaveType: req.body.LeaveType,
         LeaveDescription: req.body.LeaveDescription,
         LeaveFrom: req.body.LeaveFrom,
@@ -500,7 +502,7 @@ exports.applyForLeave = (req, res) => {
 exports.checkLeaveHistory = (req, res) => {
     const ID = req.params.employeeId;
 
-    leaveModel.findOne({ EmployeeId: ID }, (err, result) => {
+    leaveModel.find({ EmployeeId: ID }, (err, result) => {
         if (err) {
             res.send(err);
         } else {

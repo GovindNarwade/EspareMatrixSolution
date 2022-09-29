@@ -33,6 +33,26 @@ router.get("/getAllEmployee",employee.getAll);
 
 //---------- Fetch one employee with employeeId -----------------
 
+
+/**
+ * @swagger
+ * /employee/getOneEmployee/{employeeId}:
+ *   get:
+ *     summary: Fetch One employee With employeeId
+ *     tags: [Employee]
+ *     parameters:
+ *         - in: path
+ *           name: employeeId
+ *           required: true
+ *           description: employeeId is required
+ *           schema:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: Fetch One employee With employeeId
+ *   
+ */
+
 router.get("/getOneEmployee/:employeeId",employee.getOne);
 
 
@@ -624,7 +644,7 @@ router.put("/updateExperienceDetails/:employeeId",employee.updateExperience);
  *              type: string
  *     responses:
  *       200:
- *         description: employee successfully
+ *         description: employee deleted successfully
  *   
  */
 router.delete("/deleteEmployee/:employeeId",employee.delete);
@@ -640,6 +660,8 @@ router.delete("/deleteEmployee/:employeeId",employee.delete);
 
 
 //----------------------------- Submit Attendance ---------------------------------
+
+
 
 /**
  * @swagger
@@ -722,7 +744,29 @@ router.post("/submitAttendance",upload.single("LivePicture"),employee.submitAtte
 
 
 
+
+/**
+ * @swagger
+ * /employee/getAttendance/{employeeId}:
+ *   get:
+ *     summary: Returns attendance of employee
+ *     tags: [Employee]
+ *     parameters: 
+ *         - in: path
+ *           name: employeeId
+ *           required: true
+ *           description: employeeId is required
+ *           schema:
+ *              type: string
+ * 
+ *     responses:
+ *       200:
+ *         description: Returns attendance of employee
+ *         
+ */
 router.get("/getAttendance/:employeeId",employee.getAttendance);
+
+
 
 
 
@@ -767,19 +811,19 @@ router.get("/getAttendance/:employeeId",employee.getAttendance);
  *           descripton: Date of leave end
  *         Status:
  *           type: string
- *           descripton: status of leave application 
+ *           descripton: Status of leave application
+ *         
  *       example:
  *         EmployeeId: EM-SM101
  *         LeaveType: Medical
  *         LeaveDescription: Heavy Fever
  *         LeaveFrom: 22-09-22
  *         LeaveTo: 24-09-22
- *         Status: A Waiting Approvel
  */
 
 /**
  * @swagger
- * /employee/applyForLeave/{employeeId}:
+ * /employee/applyForLeave:
  *   post:
  *     summary: Apply for leave
  *     tags: [Employee]
@@ -794,7 +838,7 @@ router.get("/getAttendance/:employeeId",employee.getAttendance);
  *         description: Leave Application Submited Sucessfully!
  *   
  */
-router.post("/applyForLeave/:employeeId",employee.applyForLeave);
+router.post("/applyForLeave",employee.applyForLeave);
 
 
 
@@ -809,22 +853,55 @@ router.post("/applyForLeave/:employeeId",employee.applyForLeave);
  *   get:
  *     summary: Returns history of leave application
  *     tags: [Employee]
+ *     parameters: 
+ *         - in: path
+ *           name: employeeId
+ *           required: true
+ *           description: employeeId is required
+ *           schema:
+ *              type: string
+ * 
  *     responses:
  *       200:
  *         description: history of leave application
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/employee5'
+ *         
  */
 router.get("/checkLeaveHistory/:employeeId",employee.checkLeaveHistory);
 
 
 
+
+
+
 //---------------------------- get leaves count -----------------------------------
+
+/**
+ * @swagger
+ * /employee/getLeavesCount/{employeeId}:
+ *   get:
+ *     summary: Returns LeavesCount of employee
+ *     tags: [Employee]
+ *     parameters: 
+ *         - in: path
+ *           name: employeeId
+ *           required: true
+ *           description: employeeId is required
+ *           schema:
+ *              type: string
+ * 
+ *     responses:
+ *       200:
+ *         description: Returns LeaveCount of employee
+ *         
+ */
 router.get("/getLeavesCount/:employeeId",employee.getLeavesCount);
+
+
+
+
+
+
+
 
 router.put("/acceptLeaveApplication/:employeeId",employee.acceptLeaveApplication);
 
