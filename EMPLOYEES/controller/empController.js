@@ -35,11 +35,19 @@ exports.register = async (req, res) => {
         EmailId: req.body.EmailId,
         Password: req.body.Password,
     });
-    details.save((err) => {
+    details.save((err,result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Register Employee Sucessfully!");
+            res.json({
+                Sucess: true,
+                msg: "Register Employee Sucessfully",
+                data: result
+            });
         }
     })
 
@@ -51,9 +59,20 @@ exports.register = async (req, res) => {
 //------------------ Fetch All Employees Details-------------
 
 exports.getAll = async (req, res) => {
-    let result;
     employeeModel.find({}, (err, result) => {
-        res.send(result);
+        if (err) {
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
+        }else{
+            res.json({
+                Sucess: true,
+                msg: "Fetch Employee Sucessfully",
+                data: result
+            });
+        }
     });
 
 }
@@ -69,9 +88,17 @@ exports.getOne = (req,res) => {
 
     employeeModel.findOne({EmployeeId: ID},(err,result)=>{
         if(err){
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         }else{
-            res.send(result);
+            res.json({
+                Sucess: true,
+                msg: "Fetch Employee Sucessfully",
+                data: result
+            });
         }
     });
 }
@@ -93,9 +120,17 @@ exports.update = (req, res) => {
 
     employeeModel.findOneAndUpdate({ EmployeeId: ID }, details, (err, result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Employee Details with EmployeeID " + ID + " Updated Sucessfully!");
+            res.json({
+                Sucess: true,
+                msg: "Employee Details with EmployeeID " + ID + " Updated Sucessfully!",
+                data: result
+            });
         }
     });
 }
@@ -141,9 +176,17 @@ exports.updateProfile = async (req, res) => {
     }
     employeeModel.findOneAndUpdate({ EmployeeId: ID }, details, (err, result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Employee Details with EmployeeID " + ID + " Updated Sucessfully!");
+            res.json({
+                Sucess: true,
+                msg: "Employee Profile Details with EmployeeID " + ID + " Updated Sucessfully!",
+                data: result
+            });
         }
     });
 }
@@ -174,9 +217,17 @@ exports.updateEducation = (req, res) => {
 
     employeeModel.findOneAndUpdate({ EmployeeId: ID }, details, (err, result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Employee Details with EmployeeID " + ID + " Updated Sucessfully!");
+            res.json({
+                Sucess: true,
+                msg: "Employee Education Details with EmployeeID " + ID + " Updated Sucessfully!",
+                data: result
+            });
         }
     });
 }
@@ -207,9 +258,17 @@ exports.updateExperience = (req, res) => {
 
     employeeModel.findOneAndUpdate({ EmployeeId: ID }, details, (err, result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Employee Details with EmployeeID " + ID + " Updated Sucessfully!");
+            res.json({
+                Sucess: true,
+                msg: "Employee Experience Details with EmployeeID " + ID + " Updated Sucessfully!",
+                data: result
+            });
         }
     });
 }
@@ -267,7 +326,7 @@ exports.submitAttendance = async (req,res) => {
                         if(err){
                             res.json({
                                 Sucess: false,
-                                msg: "Error: "+err
+                                msg: "Error: "+err,
                             });
                         }
                     });
@@ -399,7 +458,7 @@ exports.submitAttendance = async (req,res) => {
                 AttendanceCheckout: req.body.AttendanceCheckout
              });
         
-             attendance.save((err)=>{
+             attendance.save((err,result)=>{
                 if(err){
                     res.json({
                         Sucess: false,
@@ -409,7 +468,8 @@ exports.submitAttendance = async (req,res) => {
                 }else{
                     res.json({
                         Sucess: true,
-                        msg: "Attendance Submited Sucessfully!!!!"
+                        msg: "Attendance Submited Sucessfully",
+                        data: result
                     });
                 }
                 
@@ -461,11 +521,13 @@ exports.getAttendance = (req,res) => {
         }else{
             res.json({
                 Sucess: true,
+                data: {
                 PresentDays: result.PresentDays,
                 HalfDays: result.HalfDays,
                 AbsentDays: result.AbsentDays,
                 LateLogin: result.LateLogin,
                 EarlyLogout: result.EarlyLogout
+                }
             });
         }
     });
@@ -473,65 +535,7 @@ exports.getAttendance = (req,res) => {
 
 
 
-//__________________________________ Leave Section ___________________________________
 
-
-exports.applyForLeave = (req, res) => {
-
-    let Form = new leaveModel({
-        EmployeeId: req.body.EmployeeId,
-        LeaveType: req.body.LeaveType,
-        LeaveDescription: req.body.LeaveDescription,
-        LeaveFrom: req.body.LeaveFrom,
-        LeaveTo: req.body.LeaveTo,
-        Status: "A Waiting Approvel"
-    });
-
-    Form.save((err) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send("Leave Form Submited Successfully!");
-        }
-    });
-}
-
-
-
-
-exports.checkLeaveHistory = (req, res) => {
-    const ID = req.params.employeeId;
-
-    leaveModel.find({ EmployeeId: ID }, (err, result) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(result);
-        }
-    });
-}
-
-
-
-exports.getLeavesCount = (req,res) =>{
-    const ID = req.params.employeeId;
-
-    payrollModel.findOne({EmployeeId: ID},(err,result)=>{
-        if(err){
-            res.json({
-                Sucess: false,
-                msg: "Error: "+err
-            });
-        }else{
-            res.json({
-                Sucess: true,
-                AllLeaves: result.AllLeaves,
-                MedicalLeaves: result.MedicalLeaves,
-                CasualLeaves: result.CasualLeaves
-            });
-        }
-    });
-}
 
 
 exports.acceptLeaveApplication = async (req, res) => {

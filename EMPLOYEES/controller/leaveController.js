@@ -12,11 +12,19 @@ exports.applyForLeave = (req,res) =>{
         Status: "A Waiting Approvel"
     });
 
-    Form.save((err) => {
+    Form.save((err,result) => {
         if (err) {
-            res.send(err);
+            res.json({
+                Sucess: false,
+                msg: "Error: "+err,
+                data: null
+            });
         } else {
-            res.send("Leave Form Submited Successfully!");
+            res.json({
+                Sucess: true,
+                msg: "Leave Form Submited Successfully!",
+                data: result
+            });
         }
     });
 }
